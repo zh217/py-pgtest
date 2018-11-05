@@ -16,11 +16,9 @@ and the system will:
 * first run `__nuke__.sql` using psql, 
 * then run `__init__.sql` to do the db initialization (hint: you can
 use `\ir` in your script to achieve some structure),
-* finally run all `test_*.sql` files found in the subdirectories after first
-appending the content of `__test__.sql` to each of them.
+* finally run all `test_*.sql` files found in the subdirectories.
 
-The tests should be written in [pgtap](https://pgtap.org/) style (and the
-appropriate set-up done in `__test__.sql`), and the test results
+The tests should be written in [pgtap](https://pgtap.org/) style, and the test results
 will be displayed using python's unittest style.
 
 If the argument `--watch` is given, will watch any changes to any
