@@ -5,7 +5,7 @@ setup(
     name='py-pgtest',
     version='0.1.0',
     packages=['py_pgtest'],
-    url='github',
+    url='https://github.com/zh217/py-pgtest',
     license='MIT',
     author='Ziyang Hu',
     author_email='hu.ziyang@cantab.net',
