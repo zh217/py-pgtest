@@ -3,7 +3,7 @@ import setuptools
 
 setup(
     name='py-pgtest',
-    version='0.1.1',
+    version='0.1.2',
     packages=['py_pgtest'],
     url='https://github.com/zh217/py-pgtest',
     license='MIT',
@@ -13,5 +13,6 @@ setup(
     entry_points={
         'console_scripts': ['pgtest=py_pgtest.cli:main'],
     },
-    install_requires=['pytest-tap', 'watchdog']
+    install_requires=['pytest-tap', 'watchdog', 'colorama'],
+    include_package_data=True
 )

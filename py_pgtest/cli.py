@@ -23,12 +23,10 @@ class Main:
         parser.add_argument('--dir', default='.', help='default folder to find SQL script')
         parser.add_argument('--pg-uri', help='how to connect to postgres testing server', required=True)
         parser.add_argument('--watch', action='store_true', help='continuously monitor for changes')
-        parser.add_argument('--test-script', default='__test__.sql', help='name of testing initialization script')
         parser.add_argument('--init-script', default='__init__.sql', help='name of database initialization script')
         parser.add_argument('--nuke-script', default='__nuke__.sql',
                             help='name of nuking script for wiping database clean')
         parser.add_argument('--psql', default='psql', help='path to psql executable to use')
-        parser.add_argument('--verbose', action='store_true', help='verbosity', default=True)
 
         self.parser = parser
 
@@ -52,6 +50,7 @@ class Main:
             while True:
                 if event_handler.should_run_for_file:
                     time.sleep(1)
+                    print()
                     print('-> Detected file change:', event_handler.should_run_for_file)
                     event_handler.should_run_for_file = None
                     self.run_once(parsed)
@@ -66,10 +65,8 @@ class Main:
             run_tests(uri=parsed.pg_uri,
                       psql=parsed.psql,
                       base_path=parsed.dir,
-                      test_script=parsed.test_script,
                       init_script=parsed.init_script,
-                      nuke_script=parsed.nuke_script,
-                      verbose=parsed.verbose)
+                      nuke_script=parsed.nuke_script)
         except subprocess.CalledProcessError:
             traceback.print_exc()
 

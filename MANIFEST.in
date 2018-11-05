@@ -1,0 +1,1 @@
+include py_pgtest/pgtap_prefix.sql
