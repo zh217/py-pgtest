@@ -81,7 +81,12 @@ def run_tests(uri, psql, base_path, test_script, init_script, nuke_script, verbo
 
     for rel_path, script in scripts_to_test:
         stdout, stderr = run_string(uri, psql, script, check=False)
+        if stdout:
+            for l in stdout.splitlines():
+                if l.startswith('# '):
+                    print(l, file=sys.stderr)
         if stderr:
+            # print('captured stderr')
             print(stderr, file=sys.stderr)
         outpath = os.path.join(tmpdir, rel_path)
         os.makedirs(os.path.dirname(outpath), exist_ok=True)

@@ -3,6 +3,8 @@ import time
 from watchdog.observers import Observer
 from watchdog.events import RegexMatchingEventHandler
 from py_pgtest.pgtest import *
+import traceback
+import subprocess
 
 
 class RunOnChange(RegexMatchingEventHandler):
@@ -60,13 +62,16 @@ class Main:
         observer.join()
 
     def run_once(self, parsed):
-        run_tests(uri=parsed.pg_uri,
-                  psql=parsed.psql,
-                  base_path=parsed.dir,
-                  test_script=parsed.test_script,
-                  init_script=parsed.init_script,
-                  nuke_script=parsed.nuke_script,
-                  verbose=parsed.verbose)
+        try:
+            run_tests(uri=parsed.pg_uri,
+                      psql=parsed.psql,
+                      base_path=parsed.dir,
+                      test_script=parsed.test_script,
+                      init_script=parsed.init_script,
+                      nuke_script=parsed.nuke_script,
+                      verbose=parsed.verbose)
+        except subprocess.CalledProcessError:
+            traceback.print_exc()
 
 
 def main():
