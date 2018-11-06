@@ -17,7 +17,7 @@ colorama.init()
 
 
 def _construct_psql_command(psql, uri):
-    return [psql, '-d', uri]
+    return [psql, '-d', uri, ' -v' 'ON_ERROR_STOP=1']
 
 
 def discover_test_scripts(basepath, pattern=DEFAULT_TEST_SCRIPT_PATTERN):
