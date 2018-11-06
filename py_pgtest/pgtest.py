@@ -83,7 +83,6 @@ def run_tests(uri, psql, base_path, init_script, nuke_script, verbose=False, str
     if skip_tests:
         return
 
-    run_script(uri, [os.path.join(base_path, init_script)], psql)
     scripts_to_test = discover_test_scripts(base_path)
     tmpdir = os.path.join(tempfile.gettempdir(), 'pgtest')
     os.makedirs(tmpdir, exist_ok=True)
