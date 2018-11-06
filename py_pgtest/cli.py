@@ -5,6 +5,7 @@ from watchdog.events import RegexMatchingEventHandler
 from py_pgtest.pgtest import *
 import traceback
 import subprocess
+import colorama
 
 
 class RunOnChange(RegexMatchingEventHandler):
@@ -67,8 +68,14 @@ class Main:
                       base_path=parsed.dir,
                       init_script=parsed.init_script,
                       nuke_script=parsed.nuke_script)
-        except subprocess.CalledProcessError:
+        except subprocess.CalledProcessError as e:
             traceback.print_exc()
+            if e.stdout:
+                print('========================= captured stdout ============================')
+                print(e.stdout.decode('utf-8'), file=sys.stderr)
+            if e.stderr:
+                print('========================= captured stderr ============================')
+                print(f'{colorama.Fore.RED}{e.stderr.decode("utf-8")}{colorama.Style.RESET_ALL}', file=sys.stderr)
 
 
 def main():

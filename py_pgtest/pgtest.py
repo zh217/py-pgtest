@@ -97,9 +97,9 @@ def run_tests(uri, psql, base_path, init_script, nuke_script, verbose=False, str
         # for l in stdout.splitlines():
         #     if l.startswith('# '):
         #         print(l, file=sys.stderr)
-        # if stderr:
-        #     print('captured stderr')
-        #     print(stderr, file=sys.stderr)
+        if stderr:
+            print('========================= captured stderr ============================')
+            print(f'{colorama.Fore.RED}{stderr}{colorama.Style.RESET_ALL}', file=sys.stderr)
         outpath = os.path.join(tmpdir, _get_non_base_path(base_path, path))
         os.makedirs(os.path.dirname(outpath), exist_ok=True)
         with open(outpath, 'w', encoding='utf-8') as f:

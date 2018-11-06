@@ -11,4 +11,5 @@
 \set ON_ERROR_ROLLBACK 1
 \set ON_ERROR_STOP true
 
+SET client_min_messages TO WARNING;
 CREATE EXTENSION IF NOT EXISTS pgtap;

@@ -3,7 +3,7 @@ import setuptools
 
 setup(
     name='py-pgtest',
-    version='0.1.2',
+    version='0.1.3',
     packages=['py_pgtest'],
     url='https://github.com/zh217/py-pgtest',
     license='MIT',
