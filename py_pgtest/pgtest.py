@@ -17,7 +17,7 @@ colorama.init()
 
 
 def _construct_psql_command(psql, uri):
-    return [psql, '-d', uri, ' -v' 'ON_ERROR_STOP=1']
+    return [psql, '-d', uri, '-v', 'ON_ERROR_STOP=1']
 
 
 def discover_test_scripts(basepath, pattern=DEFAULT_TEST_SCRIPT_PATTERN):
@@ -68,10 +68,20 @@ def _get_non_base_path(base_path, path):
 
 
 def run_tests(uri, psql, base_path, init_script, nuke_script, verbose=False, stream=sys.stderr,
-              pgtap_init_file=DEFAULT_PGTAP_INIT_FILE):
-    print('-> Running cleanup script')
-    run_script(uri, [os.path.join(base_path, nuke_script)], psql)
-    print('-> Running initialization script')
+              pgtap_init_file=DEFAULT_PGTAP_INIT_FILE, init_only=False, nuke_only=False, no_init_nuke=False,
+              no_final_nuke=False):
+    skip_tests = init_only or nuke_only
+
+    if (not skip_tests and not no_init_nuke) or nuke_only:
+        print('-> Running cleanup script')
+        run_script(uri, [os.path.join(base_path, nuke_script)], psql)
+
+    if (not skip_tests) or init_only:
+        print('-> Running initialization script')
+
+    if skip_tests:
+        return
+
     run_script(uri, [os.path.join(base_path, init_script)], psql)
     scripts_to_test = discover_test_scripts(base_path)
     tmpdir = os.path.join(tempfile.gettempdir(), 'pgtest')
@@ -105,6 +115,11 @@ def run_tests(uri, psql, base_path, init_script, nuke_script, verbose=False, str
         with open(outpath, 'w', encoding='utf-8') as f:
             f.write(stdout)
         tap_files.append(outpath)
+
+    if not no_final_nuke:
+        print('-> Running cleanup script')
+        run_script(uri, [os.path.join(base_path, nuke_script)], psql)
+
     loader = tap.loader.Loader()
     suite = loader.load(tap_files)
     shutil.rmtree(tmpdir)

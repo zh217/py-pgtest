@@ -28,6 +28,11 @@ class Main:
         parser.add_argument('--nuke-script', default='__nuke__.sql',
                             help='name of nuking script for wiping database clean')
         parser.add_argument('--psql', default='psql', help='path to psql executable to use')
+        parser.add_argument('--init-only', action='store_true', help='only run init script')
+        parser.add_argument('--nuke-only', action='store_true', help='only run nuke script')
+        parser.add_argument('--no-init-nuke', action='store_true',
+                            help='do not run nuke script at the beginning of the run')
+        parser.add_argument('--no-final-nuke', action='store_true', help='do not run nuke script at the end of the run')
 
         self.parser = parser
 
@@ -67,7 +72,11 @@ class Main:
                       psql=parsed.psql,
                       base_path=parsed.dir,
                       init_script=parsed.init_script,
-                      nuke_script=parsed.nuke_script)
+                      nuke_script=parsed.nuke_script,
+                      init_only=parsed.init_only,
+                      nuke_only=parsed.nuke_only,
+                      no_final_nuke=parsed.no_final_nuke,
+                      no_init_nuke=parsed.no_init_nuke)
         except subprocess.CalledProcessError as e:
             traceback.print_exc()
             if e.stdout:
