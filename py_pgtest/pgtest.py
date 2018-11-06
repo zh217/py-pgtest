@@ -78,6 +78,7 @@ def run_tests(uri, psql, base_path, init_script, nuke_script, verbose=False, str
 
     if (not skip_tests) or init_only:
         print('-> Running initialization script')
+        run_script(uri, [os.path.join(base_path, init_script)], psql)
 
     if skip_tests:
         return
