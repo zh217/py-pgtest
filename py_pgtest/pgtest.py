@@ -61,12 +61,6 @@ def _read_file_content(base_path, path):
         return f.read()
 
 
-def _get_non_base_path(base_path, path):
-    base_path = os.path.abspath(base_path)
-    path = os.path.abspath(path)
-    return path[len(base_path):]
-
-
 def run_tests(uri, psql, base_path, init_script, nuke_script, verbose=False, stream=sys.stderr,
               pgtap_init_file=DEFAULT_PGTAP_INIT_FILE, init_only=False, nuke_only=False, no_init_nuke=False,
               no_final_nuke=False):
@@ -110,7 +104,8 @@ def run_tests(uri, psql, base_path, init_script, nuke_script, verbose=False, str
         if stderr:
             print('========================= captured stderr ============================')
             print(f'{colorama.Fore.RED}{stderr}{colorama.Style.RESET_ALL}', file=sys.stderr)
-        outpath = os.path.join(tmpdir, _get_non_base_path(base_path, path))
+        relpath = os.path.relpath(path, base_path)
+        outpath = os.path.join(tmpdir, relpath)
         os.makedirs(os.path.dirname(outpath), exist_ok=True)
         with open(outpath, 'w', encoding='utf-8') as f:
             f.write(stdout)
