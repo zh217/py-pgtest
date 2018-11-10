@@ -27,6 +27,8 @@ class Main:
         parser.add_argument('--init-script', default='__init__.sql', help='name of database initialization script')
         parser.add_argument('--nuke-script', default='__nuke__.sql',
                             help='name of nuking script for wiping database clean')
+        parser.add_argument('--test-script', default='__test__.sql',
+                            help='script to run after initialization but before tests, for adding dummy data')
         parser.add_argument('--psql', default='psql', help='path to psql executable to use')
         parser.add_argument('--init-only', action='store_true', help='only run init script')
         parser.add_argument('--nuke-only', action='store_true', help='only run nuke script')
@@ -73,6 +75,7 @@ class Main:
                       base_path=parsed.dir,
                       init_script=parsed.init_script,
                       nuke_script=parsed.nuke_script,
+                      test_script=parsed.test_script,
                       init_only=parsed.init_only,
                       nuke_only=parsed.nuke_only,
                       no_final_nuke=parsed.no_final_nuke,

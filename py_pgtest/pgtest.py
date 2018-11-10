@@ -61,7 +61,7 @@ def _read_file_content(base_path, path):
         return f.read()
 
 
-def run_tests(uri, psql, base_path, init_script, nuke_script, verbose=False, stream=sys.stderr,
+def run_tests(uri, psql, base_path, init_script, nuke_script, test_script, verbose=False, stream=sys.stderr,
               pgtap_init_file=DEFAULT_PGTAP_INIT_FILE, init_only=False, nuke_only=False, no_init_nuke=False,
               no_final_nuke=False):
     skip_tests = init_only or nuke_only
@@ -76,6 +76,9 @@ def run_tests(uri, psql, base_path, init_script, nuke_script, verbose=False, str
 
     if skip_tests:
         return
+
+    print('-> Running test initialization script')
+    run_script(uri, [os.path.join(base_path, test_script)], psql)
 
     scripts_to_test = discover_test_scripts(base_path)
     tmpdir = os.path.join(tempfile.gettempdir(), 'pgtest')
