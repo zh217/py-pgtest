@@ -10,7 +10,7 @@ import unittest
 import colorama
 
 TIMEOUT = 20
-DEFAULT_TEST_SCRIPT_PATTERN = re.compile(r'^test_.+\.sql$')
+DEFAULT_TEST_SCRIPT_PATTERN = re.compile(r'\.test\.sql$')
 DEFAULT_PGTAP_INIT_FILE = os.path.join(os.path.dirname(__file__), 'pgtap_prefix.sql')
 
 colorama.init()
