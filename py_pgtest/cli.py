@@ -22,7 +22,7 @@ class Main:
         parser = argparse.ArgumentParser(description='Continuously testing postgres')
 
         parser.add_argument('--dir', default='.', help='default folder to find SQL script')
-        parser.add_argument('--pg-uri', help='how to connect to postgres testing server', required=True)
+        parser.add_argument('--uri', help='how to connect to postgres testing server', required=True)
         parser.add_argument('--watch', action='store_true', help='continuously monitor for changes')
         parser.add_argument('--init-script', default='__init__.sql', help='name of database initialization script')
         parser.add_argument('--nuke-script', default='__nuke__.sql',
@@ -34,7 +34,6 @@ class Main:
         parser.add_argument('--nuke-only', action='store_true', help='only run nuke script')
         parser.add_argument('--no-init-nuke', action='store_true',
                             help='do not run nuke script at the beginning of the run')
-        parser.add_argument('--no-final-nuke', action='store_true', help='do not run nuke script at the end of the run')
 
         self.parser = parser
 
@@ -70,7 +69,7 @@ class Main:
 
     def run_once(self, parsed):
         try:
-            run_tests(uri=parsed.pg_uri,
+            run_tests(uri=parsed.uri,
                       psql=parsed.psql,
                       base_path=parsed.dir,
                       init_script=parsed.init_script,
@@ -78,7 +77,6 @@ class Main:
                       test_script=parsed.test_script,
                       init_only=parsed.init_only,
                       nuke_only=parsed.nuke_only,
-                      no_final_nuke=parsed.no_final_nuke,
                       no_init_nuke=parsed.no_init_nuke)
         except subprocess.CalledProcessError as e:
             traceback.print_exc()

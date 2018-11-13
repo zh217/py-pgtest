@@ -34,7 +34,6 @@ def run_script(uri, paths, psql, encoding='utf-8', check=True):
     for path in paths:
         command.append('-f')
         command.append(path)
-    # print(command)
     proc = subprocess.run(command,
                           check=check,
                           stdout=subprocess.PIPE,
@@ -62,8 +61,7 @@ def _read_file_content(base_path, path):
 
 
 def run_tests(uri, psql, base_path, init_script, nuke_script, test_script, verbose=False, stream=sys.stderr,
-              pgtap_init_file=DEFAULT_PGTAP_INIT_FILE, init_only=False, nuke_only=False, no_init_nuke=False,
-              no_final_nuke=False):
+              pgtap_init_file=DEFAULT_PGTAP_INIT_FILE, init_only=False, nuke_only=False, no_init_nuke=False):
     skip_tests = init_only or nuke_only
 
     if (not skip_tests and not no_init_nuke) or nuke_only:
@@ -100,10 +98,6 @@ def run_tests(uri, psql, base_path, init_script, nuke_script, test_script, verbo
             else:
                 is_error = False
 
-        # if stdout:
-        # for l in stdout.splitlines():
-        #     if l.startswith('# '):
-        #         print(l, file=sys.stderr)
         if stderr:
             print('========================= captured stderr ============================')
             print(f'{colorama.Fore.RED}{stderr}{colorama.Style.RESET_ALL}', file=sys.stderr)
@@ -113,10 +107,6 @@ def run_tests(uri, psql, base_path, init_script, nuke_script, test_script, verbo
         with open(outpath, 'w', encoding='utf-8') as f:
             f.write(stdout)
         tap_files.append(outpath)
-
-    if not no_final_nuke:
-        print('-> Running cleanup script')
-        run_script(uri, [os.path.join(base_path, nuke_script)], psql)
 
     loader = tap.loader.Loader()
     suite = loader.load(tap_files)
